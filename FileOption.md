@@ -1,5 +1,5 @@
 # c语言文件读写操作
-## 文件指针File
+## 一、文件指针File
 ### 1.定义
 1.FILE类型是系统预先设定的一种结构体指针struct _iobuf  
 2.FILE* 指针作为文件句柄，是文件访问的唯一标识，它由fopen函数创建，fopen打开文件成功，则返回一个有效的FILE*指针，否则返回空指针NULL //[nʌl]  
@@ -10,7 +10,49 @@
 FILE *fp;
 fp=fopen(char *filename,char *mode);
 ```
-## 一般读写函数
+> FILE * fopen(char* filename,char* mode)  
+filename:文件名，如“students.txt”。  
+mode:打开方式（读写方式，文件类型）
+
+![](https://img-blog.csdnimg.cn/20181124084932943.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05PVEZPVU5EX0xpdQ==,size_16,color_FFFFFF,t_70)
+
+### 2.文件类型分类  
+1. 文本文件：这类文件以文本的ASCII、UNICODE(万国码)等编码形式存储在计算机中。它是以"行"为基本结构的一种信息组织和存储方式。  
+2. 二进制文件：这类文件以文本的二进制形式存储在计算机中，用户一般不能直接读懂它们，只有通过相应的软件才能将其显示出来。二进制文件一般是可执行程序、图形、图像、声音等等。  
+### 3.文件打开方式
+1. "r"正文文件只读方式打开。文件不存在，则打开失败  
+2. "w"正文文件只写方式打开。若文件不存在，则建立文件；若文件存在，则删除文件内容，重建空文件  
+3. "a"正文文件添加方式。文件不存在，则建立文件  
+4. "r+ ":正文文件读写打开，文件不存在，则打开失败  
+5. "w+ " :正文文件读写方式打开，文件不存在，则建立文件  
+### 4.文件打开
+```
+#include <stdio.h>
+int main()
+{
+    FILE *fp; /*文件指针*/
+    fp=fopen("member.txt","rb");
+    if(fp==NULL)
+        printf("提示:文件未能成功打开");
+    else
+        printf("提示:文件已经打开");
+    return 0;
+} 
+```
+**Warning!**  
+使用fopen时，但凡含r字母的打开方式，一定要加判断，文件是否打开成功，否则程序不会报告错误，会运行下去。
+如：  
+```
+FILE *fr; 
+fr=fopen("abc.txt","r"); 
+if(fr==NULL){
+printf("File not open!/n"); 
+```
+### 5.文件关闭
+> fclose(FILE *fp)  
+一般地，fclose(fp)应与fopen配对使用，特别是含有写方式的文件，若不关闭，可能会造成文件数据丢失。  
+
+## 二、一般读写函数
 
 > 字符的读写函数：fgetc()函数和fputc()函数  
 字符串的读写函数：fgets()函数和fputs()函数  
@@ -54,6 +96,7 @@ void main(){
 其中，s可以是字符型数组名或字符串指针,n是指定读入的字符个数；fp为文件指针。n是一个正整数，表示从文件中最多读取n-1个字符，并将字符串指针s定位在读入的字符串首地址。fgets()函数从文件中读取字符直到遇到回车符或EOF为止，函数会在最后一个字符后加上字符串结束标志’\0’；若有EOF，则不予保留。
 
 返回值：该函数如果执行成功，返回读取字符串；如果失败，则返回空指针NULL，这时，s中的内容不确定。
+
 ```
 //fgets()函数
 
